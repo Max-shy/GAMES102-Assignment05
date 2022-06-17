@@ -8,6 +8,8 @@ struct CanvasData {
 	bool opt_enable_grid{ true };
 	bool opt_enable_context_menu{ true };
 	bool adding_line{ false };
+	bool opt_InitLine{ true };
+	bool opt_Initpoints{ true };
 
 	//细分曲线
 	std::vector<Ubpa::pointf2> Chaikin_Points;//二次均匀B样条细分点序列

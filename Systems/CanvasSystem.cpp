@@ -26,12 +26,16 @@ void CanvasSystem::OnUpdate(Ubpa::UECS::Schedule& schedule) {
 			ImGui::Checkbox("Enable context menu", &data->opt_enable_context_menu);
 			ImGui::Text("Mouse Left: drag to add lines,\nMouse Right: drag to scroll, click for context menu.");
 
+
+			ImGui::Checkbox("Show initial points", &data->opt_Initpoints);
+			ImGui::SameLine(214); ImGui::Checkbox("Show initial line", &data->opt_InitLine);
+			
 			ImGui::Checkbox("Chaikin Subdivision", &data->opt_Chaikin);
 			//ImGui::SameLine(214); ImGui::Checkbox("Uniform", &data->opt_Uniform);
 			//ImGui::SameLine(); ImGui::Checkbox("Chordal", &data->opt_Chordal);
 			//ImGui::SameLine(); ImGui::Checkbox("Centripetal", &data->opt_Centripetal);
 			//ImGui::SameLine(); ImGui::Checkbox("Foley", &data->opt_Foley);
-			ImGui::SameLine(214);ImGui::Checkbox("IsClose", &data->IsClose);
+			ImGui::SameLine(214); ImGui::Checkbox("IsClose", &data->IsClose);
 			ImGui::Checkbox("Cubic Subdivision", &data->opt_Cubic);
 			ImGui::SameLine(214);
 			ImGui::InputInt("Subdivision Level", &data->Subdivision_Level);
@@ -105,10 +109,12 @@ void CanvasSystem::OnUpdate(Ubpa::UECS::Schedule& schedule) {
 			}
 			
 			//绘制点列、曲线
-			for (int i = 0; i < data->points.size(); i++) {
-				draw_list->AddCircleFilled(ImVec2(data->points[i][0] + origin.x, data->points[i][1] + origin.y), 4.0f, IM_COL32(255, 255, 0, 255));
+			if (data->opt_Initpoints) {
+				for (int i = 0; i < data->points.size(); i++) {
+					draw_list->AddCircleFilled(ImVec2(data->points[i][0] + origin.x, data->points[i][1] + origin.y), 4.0f, IM_COL32(255, 255, 0, 255));
+				}
 			}
-			if (data->points.size() > 1) {
+			if (data->points.size() > 1 && data->opt_InitLine) {
 				for (int i = 0; i < data->points.size() - 1; i++) {
 					draw_list->AddLine(ImVec2(data->points[i][0] + origin.x, data->points[i][1] + origin.y), ImVec2(data->points[i + 1][0] + origin.x, data->points[i + 1][1] + origin.y), IM_COL32(0, 255, 0, 255), 2.0f);
 				}
@@ -116,6 +122,7 @@ void CanvasSystem::OnUpdate(Ubpa::UECS::Schedule& schedule) {
 					draw_list->AddLine(ImVec2(data->points[data->points.size() - 1][0] + origin.x, data->points[data->points.size() - 1][1] + origin.y), ImVec2(data->points[0][0] + origin.x, data->points[0][1] + origin.y), IM_COL32(0, 255, 0, 255), 2.0f);
 				}
 			}
+			
 
 			
 
@@ -140,10 +147,10 @@ void CanvasSystem::OnUpdate(Ubpa::UECS::Schedule& schedule) {
 		
 			}
 
-			//绘制点列
-			for (int n = 0; n < data->points.size() ; n++) {
-				draw_list->AddCircleFilled(ImVec2(data->points[n][0] + origin.x, data->points[n][1] + origin.y), 4.0f, IM_COL32(255, 255, 0, 255));
-			}
+			////绘制点列
+			//for (int n = 0; n < data->points.size() ; n++) {
+			//	draw_list->AddCircleFilled(ImVec2(data->points[n][0] + origin.x, data->points[n][1] + origin.y), 4.0f, IM_COL32(255, 255, 0, 255));
+			//}
 
 			draw_list->PopClipRect();
 		
